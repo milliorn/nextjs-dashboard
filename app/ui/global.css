@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*  You can use this file to add CSS rules to all the routes in your application 
+- such as CSS reset rules, site-wide styles for HTML elements like links, and more. 
+Add global styles to your application by navigating to /app/layout.tsx and importing the global.css file
+*/
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
