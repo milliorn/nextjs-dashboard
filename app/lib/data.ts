@@ -70,10 +70,10 @@ export async function fetchCardData() {
       invoiceStatusPromise,
     ]);
 
-    const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
-    const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
-    const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? '0');
-    const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? '0');
+    const numberOfInvoices = Number(data[ 0 ].rows[ 0 ].count ?? '0');
+    const numberOfCustomers = Number(data[ 1 ].rows[ 0 ].count ?? '0');
+    const totalPaidInvoices = formatCurrency(data[ 2 ].rows[ 0 ].paid ?? '0');
+    const totalPendingInvoices = formatCurrency(data[ 2 ].rows[ 0 ].pending ?? '0');
 
     return {
       numberOfCustomers,
@@ -136,7 +136,7 @@ export async function fetchInvoicesPages(query: string) {
       invoices.status ILIKE ${`%${query}%`}
   `;
 
-    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(Number(count.rows[ 0 ].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error('Database Error:', error);
@@ -162,7 +162,7 @@ export async function fetchInvoiceById(id: string) {
       amount: invoice.amount / 100,
     }));
 
-    return invoice[0];
+    return invoice[ 0 ];
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch invoice.');
@@ -223,7 +223,7 @@ export async function fetchFilteredCustomers(query: string) {
 export async function getUser(email: string) {
   try {
     const user = await sql`SELECT * FROM users WHERE email=${email}`;
-    return user.rows[0] as User;
+    return user.rows[ 0 ] as User;
   } catch (error) {
     console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');

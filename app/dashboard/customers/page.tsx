@@ -1,6 +1,6 @@
 /**
  * Renders the Customers page.
- * 
+ *
  * @returns The Customers page component.
  */
 export default function Page() {

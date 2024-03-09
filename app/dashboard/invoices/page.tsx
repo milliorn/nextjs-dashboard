@@ -1,6 +1,6 @@
 /**
  * Renders the Invoices page.
- * 
+ *
  * @returns The rendered Invoices page.
  */
 export default function Page() {
