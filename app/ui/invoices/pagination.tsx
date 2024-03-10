@@ -4,17 +4,35 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { generatePagination } from '@/app/lib/utils';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { use } from 'react';
 
+/**
+ * Renders a pagination component.
+ * @param totalPages - The total number of pages.
+ * @returns The pagination component.
+ */
 export default function Pagination({ totalPages }: { totalPages: number }) {
-  // NOTE: comment in this code when you get to this point in the course
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get('page')) || 1;
 
-  // const allPages = generatePagination(currentPage, totalPages);
+  /**
+   * Creates a URL with the specified page number.
+   * @param pageNumber - The page number to include in the URL.
+   * @returns The URL with the specified page number.
+   */
+  const createPageURL = (pageNumber: number | string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', pageNumber.toString());
+    return `${pathname}?${params.toString()}`;
+  };
+
+  const allPages = generatePagination(currentPage, totalPages);
 
   return (
     <>
-      {/* NOTE: comment in this code when you get to this point in the course */}
-
-      {/* <div className="inline-flex">
+      <div className="inline-flex">
         <PaginationArrow
           direction="left"
           href={createPageURL(currentPage - 1)}
@@ -47,11 +65,20 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
           href={createPageURL(currentPage + 1)}
           isDisabled={currentPage >= totalPages}
         />
-      </div> */}
+      </div>
     </>
   );
 }
 
+/**
+ * Renders a pagination number component.
+ *
+ * @param page - The page number or string to display.
+ * @param href - The URL to navigate to when the component is clicked.
+ * @param position - The position of the component in the pagination (optional).
+ * @param isActive - Indicates whether the component is currently active.
+ * @returns The rendered pagination number component.
+ */
 function PaginationNumber({
   page,
   href,
@@ -83,6 +110,14 @@ function PaginationNumber({
   );
 }
 
+/**
+ * Renders a pagination arrow component.
+ *
+ * @param href - The URL to navigate to when the arrow is clicked.
+ * @param direction - The direction of the arrow ('left' or 'right').
+ * @param isDisabled - Indicates whether the arrow is disabled.
+ * @returns The pagination arrow component.
+ */
 function PaginationArrow({
   href,
   direction,

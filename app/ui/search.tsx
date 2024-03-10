@@ -4,15 +4,27 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 
+/**
+ * A search component that allows users to search for a query.
+ *
+ * @param placeholder - The placeholder text for the search input.
+ * @returns The Search component.
+ */
 export default function Search({ placeholder }: { placeholder: string }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
+  /**
+   * Handles the search functionality with debouncing.
+   *
+   * @param term - The search term.
+   */
   const handleSearch = useDebouncedCallback((term: string) => {
     console.log('Searching:' + term);
 
     const params = new URLSearchParams(searchParams);
+    params.set('page', '1');
 
     if (term) {
       params.set('query', term);
