@@ -3,6 +3,8 @@
 import { z } from 'zod';
 import Form from '../ui/invoices/create-form';
 import { sql } from '@vercel/postgres';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 /**
  * Represents the form schema for a specific action.
@@ -31,6 +33,8 @@ export async function createInvoice(formData: FormData): Promise<void> {
     status: formData.get('status'),
   };
 
+  console.log('Creating invoice with data:', rawFormData);
+
   const amountInCents = amount * 100;
   const date = new Date().toISOString().split('T')[ 0 ];
 
@@ -39,5 +43,6 @@ export async function createInvoice(formData: FormData): Promise<void> {
     VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
   `;
 
-  console.log('Creating invoice with data:', rawFormData);
+  revalidatePath('/dashboard/invoices');
+  redirect('/dashboard/invoices');
 }
