@@ -2,6 +2,7 @@
 
 import { z } from 'zod';
 import Form from '../ui/invoices/create-form';
+import { sql } from '@vercel/postgres';
 
 /**
  * Represents the form schema for a specific action.
@@ -10,7 +11,7 @@ const FormSchema = z.object({
   id: z.string(),
   customerId: z.string(),
   amount: z.number(),
-  status: z.enum(['paid', 'pending', 'draft']),
+  status: z.enum([ 'paid', 'pending', 'draft' ]),
   date: z.string(),
 });
 
@@ -31,7 +32,12 @@ export async function createInvoice(formData: FormData): Promise<void> {
   };
 
   const amountInCents = amount * 100;
-  const date = new Date().toISOString().split('T')[0];
+  const date = new Date().toISOString().split('T')[ 0 ];
+
+  await sql`
+    INSERT INTO invoices (customer_id, amount, status, date)
+    VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
+  `;
 
   console.log('Creating invoice with data:', rawFormData);
 }
