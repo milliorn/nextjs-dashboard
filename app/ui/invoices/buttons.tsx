@@ -1,6 +1,10 @@
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
+/**
+ * Renders a button component for creating an invoice.
+ * @returns The JSX element representing the create invoice button.
+ */
 export function CreateInvoice() {
   return (
     <Link
@@ -13,10 +17,15 @@ export function CreateInvoice() {
   );
 }
 
+/**
+ * Renders a button component for updating an invoice.
+ * @param id - The unique identifier of the invoice.
+ * @returns The JSX element representing the update invoice button.
+ */
 export function UpdateInvoice({ id }: { id: string }) {
   return (
     <Link
-      href="/dashboard/invoices"
+      href={`/dashboard/invoices/${id}/edit`}
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-5" />
@@ -24,6 +33,11 @@ export function UpdateInvoice({ id }: { id: string }) {
   );
 }
 
+/**
+ * Renders a button component for deleting an invoice.
+ * @param id - The unique identifier of the invoice.
+ * @returns The JSX element representing the delete invoice button.
+ */
 export function DeleteInvoice({ id }: { id: string }) {
   return (
     <>

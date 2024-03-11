@@ -4,6 +4,13 @@ import InvoiceStatus from '@/app/ui/invoices/status';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 import { fetchFilteredInvoices } from '@/app/lib/data';
 
+/**
+ * Renders the table of invoices.
+ *
+ * @param query - The search query for filtering invoices.
+ * @param currentPage - The current page number.
+ * @returns The JSX element representing the invoices table.
+ */
 export default async function InvoicesTable({
   query,
   currentPage,
