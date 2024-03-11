@@ -8,7 +8,7 @@ import { fetchCustomers } from '@/app/lib/data';
  * @returns The JSX element representing the page.
  */
 export default async function Page() {
-  const customers = await fetchCustomers(); 
+  const customers = await fetchCustomers();
 
   return (
     <main>
