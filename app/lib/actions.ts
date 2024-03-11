@@ -12,8 +12,8 @@ import { redirect } from 'next/navigation';
 const FormSchema = z.object({
   id: z.string(),
   customerId: z.string(),
-  amount: z.number(),
-  status: z.enum([ 'paid', 'pending', 'draft' ]),
+  amount: z.coerce.number(),
+  status: z.enum(['pending', 'paid']),
   date: z.string(),
 });
 
@@ -24,19 +24,17 @@ const CreateInvoice = FormSchema.omit({ id: true, date: true });
  * @param formData - The form data containing the invoice details.
  * @returns A Promise that resolves to void.
  */
-export async function createInvoice(formData: FormData): Promise<void> {
-  const { customerId, amount, status } = CreateInvoice.parse(formData);
-
-  const rawFormData = {
+export async function createInvoice(formData: FormData) {
+  const { customerId, amount, status } = CreateInvoice.parse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
-  };
-
-  console.log('Creating invoice with data:', rawFormData);
+  });
 
   const amountInCents = amount * 100;
-  const date = new Date().toISOString().split('T')[ 0 ];
+  const date = new Date().toISOString().split('T')[0];
+
+  console.log('Creating invoice:', { customerId, amountInCents, status, date });
 
   await sql`
     INSERT INTO invoices (customer_id, amount, status, date)
@@ -44,5 +42,4 @@ export async function createInvoice(formData: FormData): Promise<void> {
   `;
 
   revalidatePath('/dashboard/invoices');
-  redirect('/dashboard/invoices');
 }
