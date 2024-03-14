@@ -5,6 +5,9 @@ import Form from '../ui/invoices/create-form';
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { sign } from 'crypto';
+import { AuthError } from 'next-auth';
+import { signIn } from '@/auth';
 
 /**
  * Represents the form schema for a specific action.
@@ -135,5 +138,29 @@ export async function deleteInvoice(id: string) {
     return { message: 'Deleted Invoice.' };
   } catch (error) {
     return { message: 'Database Error: Failed to Delete Invoice.' };
+  }
+}
+
+/**
+ * Authenticates a user using the provided form data.
+ * @param prevState - The previous state of the form.
+ * @param formData - The form data containing the user's credentials.
+ */
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.';
+        default:
+          return 'Something went wrong.';
+      }
+    }
+    throw error;
   }
 }
