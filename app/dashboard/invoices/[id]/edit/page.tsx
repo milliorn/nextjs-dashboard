@@ -9,7 +9,11 @@ import { notFound } from 'next/navigation';
  * @param params - The parameters for the page, including the invoice ID.
  * @returns The JSX element representing the page.
  */
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: Record<string, string>;
+}) {
   const id = params.id;
   const [invoice, customers] = await Promise.all([
     fetchInvoiceById(id),
